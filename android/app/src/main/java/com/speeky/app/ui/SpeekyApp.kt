@@ -42,7 +42,8 @@ data class UiChat(val id: String, val title: String, val username: String, val s
 @Composable
 fun SpeekyApp() {
     val scope = rememberCoroutineScope()
-    val soundFx = remember { SoundFx(androidx.compose.ui.platform.LocalContext.current) }
+    val context = androidx.compose.ui.platform.LocalContext.current
+    val soundFx = remember(context) { SoundFx(context) }
     val callManager = remember { CallManager() }
     var route by remember { mutableStateOf(Route.Auth) }
     var search by remember { mutableStateOf("") }
@@ -197,7 +198,7 @@ fun SpeekyApp() {
 @Composable private fun Avatar(letter: String, color: Color) { Box(Modifier.size(58.dp).clip(CircleShape).background(color), contentAlignment = Alignment.Center) { Text(letter, fontSize = 28.sp, fontWeight = FontWeight.Bold) } }
 @Composable private fun InfoCard(value: String, subtitle: String) { Card(shape = RoundedCornerShape(24.dp), colors = CardDefaults.cardColors(containerColor = Color.White.copy(alpha = 0.04f))) { Column(Modifier.fillMaxWidth().padding(16.dp)) { Text(value, fontSize = 22.sp, fontWeight = FontWeight.Bold); Text(subtitle, color = Color.White.copy(alpha = 0.45f)) } } }
 @Composable private fun ActionRow(onMessage: () -> Unit, onAudio: () -> Unit, onVideo: () -> Unit) { Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(10.dp)) { SmallAction("Сообщение", onMessage); SmallAction("Звонок", onAudio); SmallAction("Видео", onVideo) } }
-@Composable private fun SmallAction(label: String, onClick: () -> Unit) { Card(onClick = onClick, modifier = Modifier.weight(1f), shape = RoundedCornerShape(22.dp), colors = CardDefaults.cardColors(containerColor = Color.White.copy(alpha = 0.04f))) { Box(Modifier.fillMaxWidth().padding(vertical = 18.dp), contentAlignment = Alignment.Center) { Text(label, fontWeight = FontWeight.SemiBold) } } }
+@Composable private fun RowScope.SmallAction(label: String, onClick: () -> Unit) { Card(onClick = onClick, modifier = Modifier.weight(1f), shape = RoundedCornerShape(22.dp), colors = CardDefaults.cardColors(containerColor = Color.White.copy(alpha = 0.04f))) { Box(Modifier.fillMaxWidth().padding(vertical = 18.dp), contentAlignment = Alignment.Center) { Text(label, fontWeight = FontWeight.SemiBold) } } }
 @Composable private fun MenuCard(items: List<String>, onClick: (String) -> Unit = {}) { Card(shape = RoundedCornerShape(24.dp), colors = CardDefaults.cardColors(containerColor = Color.White.copy(alpha = 0.04f))) { Column(Modifier.fillMaxWidth()) { items.forEachIndexed { index, label -> Text(label, modifier = Modifier.fillMaxWidth().clickable { onClick(label) }.padding(horizontal = 16.dp, vertical = 16.dp), fontSize = 18.sp); if (index != items.lastIndex) Divider(color = Color.White.copy(alpha = 0.06f)) } } } }
 @Composable private fun BottomTabs(modifier: Modifier, current: String, onChats: () -> Unit, onSettings: () -> Unit) { Card(modifier = modifier.padding(12.dp), shape = RoundedCornerShape(24.dp), colors = CardDefaults.cardColors(containerColor = Color(0xDD090B11))) { Row(Modifier.fillMaxWidth().padding(8.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) { TabButton("Чаты", current == "chats", onChats, Modifier.weight(1f)); TabButton("Настройки", current == "settings", onSettings, Modifier.weight(1f)) } } }
 @Composable private fun TabButton(label: String, active: Boolean, onClick: () -> Unit, modifier: Modifier) { Button(onClick = onClick, modifier = modifier.height(52.dp), shape = RoundedCornerShape(18.dp), colors = ButtonDefaults.buttonColors(containerColor = if (active) Color.White.copy(alpha = 0.1f) else Color.Transparent, contentColor = Color.White)) { Text(label) } }
