@@ -1,21 +1,88 @@
 package com.speeky.app.core
 
 import kotlinx.serialization.Serializable
+import java.util.UUID
 
 @Serializable
-data class AuthUser(val id: String, val email: String, val username: String, val displayName: String, val avatarColor: String? = null)
+data class AppUser(
+    val id: String,
+    val name: String,
+    val username: String,
+    val email: String,
+    val password: String,
+    val isSystem: Boolean = false
+)
 
 @Serializable
-data class AuthResponse(val token: String, val user: AuthUser)
+enum class MessageKind {
+    TEXT,
+    VOICE
+}
 
 @Serializable
-data class SearchUser(val id: String, val username: String, val displayName: String, val avatarColor: String? = null)
+data class ChatMessage(
+    val id: String = UUID.randomUUID().toString(),
+    val peerId: String,
+    val fromMe: Boolean,
+    val kind: MessageKind = MessageKind.TEXT,
+    val text: String = "",
+    val audioPath: String? = null,
+    val durationSeconds: Int = 0,
+    val timestamp: Long = System.currentTimeMillis()
+)
 
 @Serializable
-data class DirectMessage(val id: String, val chatId: String, val senderId: String, val text: String, val type: String, val fileUrl: String? = null, val fileName: String? = null, val durationMs: Int? = null, val createdAt: String)
+enum class ThemePreset {
+    DARK,
+    VIOLET,
+    OCEAN,
+    SAKURA
+}
 
 @Serializable
-data class ChatPeer(val id: String, val username: String, val displayName: String, val avatarColor: String? = null, val lastSeen: String)
-
-@Serializable
-data class ChatItem(val id: String, val peer: ChatPeer, val lastMessage: String, val updatedAt: String, val messages: List<DirectMessage> = emptyList())
+data class AppSnapshot(
+    val users: List<AppUser>,
+    val currentUserId: String? = null,
+    val selectedTheme: ThemePreset = ThemePreset.VIOLET,
+    val messages: List<ChatMessage> = emptyList()
+) {
+    companion object {
+        fun seed(): AppSnapshot {
+            val me = AppUser(
+                id = "me",
+                name = "Sliminho",
+                username = "sliminho",
+                email = "hello@speeky.app",
+                password = "password123"
+            )
+            val forever = AppUser(
+                id = "forever",
+                name = "forever",
+                username = "forever",
+                email = "forever@speeky.app",
+                password = "forever123"
+            )
+            val saved = AppUser(
+                id = "saved",
+                name = "Избранное",
+                username = "saved",
+                email = "",
+                password = "",
+                isSystem = true
+            )
+            return AppSnapshot(
+                users = listOf(me, forever, saved),
+                currentUserId = null,
+                selectedTheme = ThemePreset.VIOLET,
+                messages = listOf(
+                    ChatMessage(peerId = "forever", fromMe = false, text = "маму ем", timestamp = 1710000000000),
+                    ChatMessage(peerId = "forever", fromMe = false, text = "все норм", timestamp = 1710000300000),
+                    ChatMessage(peerId = "forever", fromMe = false, text = "завтра узнаем", timestamp = 1710000600000),
+                    ChatMessage(peerId = "forever", fromMe = true, text = "как узнал ?", timestamp = 1710000900000),
+                    ChatMessage(peerId = "forever", fromMe = true, text = "время ж поздно уже за комп та не пустят", timestamp = 1710001200000),
+                    ChatMessage(peerId = "saved", fromMe = false, text = "Тут будут сохранённые сообщения", timestamp = 1710000000000)
+                )
+            )
+        }
+    }
+}

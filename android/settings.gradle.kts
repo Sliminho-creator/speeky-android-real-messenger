@@ -14,5 +14,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "SpeekyMessenger"
+rootProject.name = "Speeky"
 include(":app")

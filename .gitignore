@@ -1,10 +1,8 @@
-node_modules/
-backend/node_modules/
-backend/uploads/
-backend/storage/
-android/.gradle/
-android/local.properties
-android/app/google-services.json
-*.iml
 .gradle/
+local.properties
+*.iml
+.idea/
 build/
+android/.gradle/
+android/build/
+android/app/build/
