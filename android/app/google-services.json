@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "840292654957",
+    "project_id": "speeky-109b7",
+    "storage_bucket": "speeky-109b7.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:840292654957:android:c23b8519713f0520618464",
+        "android_client_info": {
+          "package_name": "com.speeky.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAXLBJ4katsr0pC6uy62v3C-bQhPhlbMV4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
