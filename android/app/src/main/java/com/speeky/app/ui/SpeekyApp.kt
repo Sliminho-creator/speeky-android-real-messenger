@@ -80,7 +80,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.assistChipColors
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -233,7 +232,7 @@ fun SpeekyApp() {
         unreadCounters[peerId] = 0
         SoundFx.tap()
 
-        if (!userById(peerId).isSystem) {
+        if (!userById(peerId).isSystem()) {
             scope.launch {
                 delay(900)
                 updateSnapshot {
